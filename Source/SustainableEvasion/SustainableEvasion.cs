@@ -124,10 +124,10 @@ namespace SustainableEvasion
             {
                 weightClass = (actor as Vehicle).weightClass;
             }
-            //else
-            //{
-            //    return 0;
-            //}
+            else
+            {
+                return 0;
+            }
 
             if (logInfo)
             {
