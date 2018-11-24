@@ -1,0 +1,10 @@
+{
+    "Name": "SustainableEvasion",
+    "Enabled": true,
+
+    "Version": "0.9",
+    "Description": "Skilled pilots can sustain some of their evasion while being fired at.",
+    "Author": "Ben",
+	
+	"DLL": "SustainableEvasion.dll",
+}
