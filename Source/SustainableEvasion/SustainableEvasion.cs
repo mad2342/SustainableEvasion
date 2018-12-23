@@ -62,7 +62,7 @@ namespace SustainableEvasion
                     sidePanelTip.Description = new Localize.Text(toHitMovingTargetStrings[num], new object[]
                     {
                             HUD.Combat.ToHit.GetEvasivePipsModifier((int)TargetCurrent, null),
-                            MaxPipsSustainable > 0 ? "\n<color=#CADFACFF>(" + MaxPipsSustainable.ToString() + " SUSTAINABLE Evasion: These can only be removed by melee or sensor lock.)</color>" : ""
+                            MaxPipsSustainable > 0 ? "\n<color=#CADFACFF>" + MaxPipsSustainable.ToString() + " SUSTAINABLE Evasion: These can only be removed by melee or sensor lock.</color>" : ""
                     });
                 }
             }

@@ -285,6 +285,11 @@ namespace SustainableEvasion
                         }
                     }
                 }
+
+                // Make sustainable evasion removable if many shots are directed at target?
+                Logger.LogLine("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.allSelectedWeapons.Count: " + attackSequence.allSelectedWeapons.Count.ToString());
+                Logger.LogLine("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.attackTotalShotsFired: " + attackSequence.attackTotalShotsFired);
+
                 int evasivePipsCurrent = __instance.EvasivePipsCurrent;
                 //BEN: Patch
                 if (Fields.LoosePip || attackSequence.isMelee) {
