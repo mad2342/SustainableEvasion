@@ -2,9 +2,9 @@
     "Name": "SustainableEvasion",
     "Enabled": true,
 
-    "Version": "0.9",
+    "Version": "1.3.1-001R",
     "Description": "Skilled pilots can sustain some of their evasion while being fired at.",
-    "Author": "Ben",
+    "Author": "Mad",
 	
-	"DLL": "SustainableEvasion.dll",
+	"DLL": "SustainableEvasion.dll"
 }
