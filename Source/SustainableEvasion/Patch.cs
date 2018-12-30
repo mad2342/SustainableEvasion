@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 
 
+
 namespace SustainableEvasion
 {
     [HarmonyPatch(typeof(CombatHUDStatusPanel), "ShowPreviewMoveIndicators")]
