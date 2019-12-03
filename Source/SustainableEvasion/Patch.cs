@@ -272,7 +272,7 @@ namespace SustainableEvasion
             try {
 
                 AttackDirector.AttackSequence attackSequence = __instance.Combat.AttackDirector.GetAttackSequence(sequenceID);
-                if (attackSequence != null && attackSequence.attackDidDamage) {
+                if (attackSequence != null && attackSequence.GetAttackDidDamage(__instance.GUID)) {
                     List<Effect> list = __instance.Combat.EffectManager.GetAllEffectsTargeting(__instance).FindAll((Effect x) => x.EffectData.targetingData.effectTriggerType == EffectTriggerType.OnDamaged);
                     for (int i = 0; i < list.Count; i++) {
                         list[i].OnEffectTakeDamage(attackSequence.attacker, __instance);
