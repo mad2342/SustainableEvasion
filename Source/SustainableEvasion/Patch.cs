@@ -4,8 +4,6 @@ using Harmony;
 using System;
 using System.Collections.Generic;
 
-
-
 namespace SustainableEvasion
 {
     [HarmonyPatch(typeof(CombatHUDStatusPanel), "ShowPreviewMoveIndicators")]
@@ -25,7 +23,7 @@ namespace SustainableEvasion
                     {
                         // Need to set all fields as one can select other actors during preview leading to wrong results
                         Logger.LogLine("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SETTING fields at PREVIEW MOVE for pilot: " + p.Name);
-                        Fields.SustainablePips = SustainableEvasion.GetSustainableEvasion(a);
+                        Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                         Fields.WillJumpOrHasJumped = moveType == MoveType.Jumping;
                         Fields.LastActorInfo = a.LogDisplayName;
                         Logger.LogLine("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
@@ -62,7 +60,7 @@ namespace SustainableEvasion
                         if (p != null)
                         {
                             Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SETTING fields at EVASIVE CHANGED for pilot: " + p.Name);
-                            Fields.SustainablePips = SustainableEvasion.GetSustainableEvasion(a);
+                            Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                             Fields.WillJumpOrHasJumped = a.JumpedLastRound;
                             Fields.LastActorInfo = a.LogDisplayName;
                             Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
@@ -76,7 +74,7 @@ namespace SustainableEvasion
                     //CombatHUDEvasiveBarPips EvasiveDisplay = (CombatHUDEvasiveBarPips)AccessTools.Property(typeof(CombatHUDActorInfo), "EvasiveDisplay").GetValue(__instance, null);
                     //SustainableEvasion.ColorEvasivePips(EvasiveDisplay, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
 
-                    SustainableEvasion.ColorEvasivePips(__instance.EvasiveDisplay, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
+                    Utilities.ColorEvasivePips(__instance.EvasiveDisplay, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
 
                     // Directly invoke patched method would be better but i just can't wrap my head around it
                     //MethodInfo mi = AccessTools.Method(typeof(CombatHUDEvasiveBarPips), "ShowCurrent");
@@ -109,7 +107,7 @@ namespace SustainableEvasion
                     if (p != null)
                     {
                         Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SETTING fields at REFRESH INFO for pilot: " + p.Name);
-                        Fields.SustainablePips = SustainableEvasion.GetSustainableEvasion(a);
+                        Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                         Fields.WillJumpOrHasJumped = a.JumpedLastRound;
                         Fields.LastActorInfo = a.LogDisplayName;
                         Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
@@ -134,7 +132,7 @@ namespace SustainableEvasion
                 Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] Called");
                 // This call is to prevent wrong coloring of pips during movement preview
                 // BUT will corrupt pips of selected target in TargetingComputer (if any) DURING movement preview :-( (-> fixed, see below)
-                SustainableEvasion.ColorEvasivePips(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
+                Utilities.ColorEvasivePips(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
 
                 
                 
@@ -156,8 +154,8 @@ namespace SustainableEvasion
                 {
                     if (HUD.TargetingComputer.ActorInfo.DisplayedCombatant is AbstractActor displayedActor)
                     {
-                        int sustainableEvasion = SustainableEvasion.GetSustainableEvasion(displayedActor);
-                        SustainableEvasion.ColorEvasivePips(HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
+                        int sustainableEvasion = Utilities.GetSustainableEvasion(displayedActor);
+                        Utilities.ColorEvasivePips(HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
                     }
                 }
 
@@ -200,7 +198,7 @@ namespace SustainableEvasion
             {
                 Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] Called");
                 // Update side panel for last touched actor
-                SustainableEvasion.UpdateSidePanel(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
+                Utilities.UpdateSidePanel(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
 
 
 
@@ -221,8 +219,8 @@ namespace SustainableEvasion
                 {
                     if (HUD.TargetingComputer.ActorInfo.DisplayedCombatant is AbstractActor displayedActor)
                     {
-                        int sustainableEvasion = SustainableEvasion.GetSustainableEvasion(displayedActor);
-                        SustainableEvasion.UpdateSidePanel(HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
+                        int sustainableEvasion = Utilities.GetSustainableEvasion(displayedActor);
+                        Utilities.UpdateSidePanel(HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
                     }
                 }
 
@@ -242,7 +240,7 @@ namespace SustainableEvasion
             // This seems to be the only "one fits all" place to color the pips aside from completely overriding stuff
             // It NEEDS to be called no matter what as "ShowValue" from base class (CombatHUDPipBar) ALWAYS colors pips!
             // As CombatHUDEvasiveBarPips has no info of relevant actor itself this needs to be maintained through custom fields
-            SustainableEvasion.ColorEvasivePips(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
+            Utilities.ColorEvasivePips(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
         }
     }
 
@@ -259,7 +257,7 @@ namespace SustainableEvasion
                 Fields.LoosePip = true;
             }
             // Determine capabilities of current actor
-            int sustainableEvasion = SustainableEvasion.GetSustainableEvasion(__instance);
+            int sustainableEvasion = Utilities.GetSustainableEvasion(__instance);
             if (sustainableEvasion < __instance.EvasivePipsCurrent)
             {
                 Fields.LoosePip = true;
