@@ -22,11 +22,11 @@ namespace SustainableEvasion
 
             if (logInfo)
             {
-                Logger.LogLine("[Utilities_UpdateSidePanel] sustainablePips: " + sustainablePips);
-                Logger.LogLine("[Utilities_UpdateSidePanel] willJumpOrHasJumped: " + willJumpOrHasJumped);
+                Logger.Debug("[Utilities_UpdateSidePanel] sustainablePips: " + sustainablePips);
+                Logger.Debug("[Utilities_UpdateSidePanel] willJumpOrHasJumped: " + willJumpOrHasJumped);
 
-                Logger.LogLine("[Utilities_UpdateSidePanel] CurrentEvasivePips: " + CurrentEvasivePips);
-                Logger.LogLine("[Utilities_UpdateSidePanel] MaxPipsSustainable: " + MaxPipsSustainable);
+                Logger.Debug("[Utilities_UpdateSidePanel] CurrentEvasivePips: " + CurrentEvasivePips);
+                Logger.Debug("[Utilities_UpdateSidePanel] MaxPipsSustainable: " + MaxPipsSustainable);
             }
 
             if (sidePanelTip != null)
@@ -70,15 +70,15 @@ namespace SustainableEvasion
 
             if (logInfo)
             {
-                Logger.LogLine("[Utilities_ColorEvasivePips] sustainablePips: " + sustainablePips);
-                Logger.LogLine("[Utilities_ColorEvasivePips] willJumpOrHasJumped: " + willJumpOrHasJumped);
+                Logger.Debug("[Utilities_ColorEvasivePips] sustainablePips: " + sustainablePips);
+                Logger.Debug("[Utilities_ColorEvasivePips] willJumpOrHasJumped: " + willJumpOrHasJumped);
 
-                Logger.LogLine("[Utilities_ColorEvasivePips] CurrentEvasivePips: " + CurrentEvasivePips);
-                Logger.LogLine("[Utilities_ColorEvasivePips] MaxPipsSustainable: " + MaxPipsSustainable);
+                Logger.Debug("[Utilities_ColorEvasivePips] CurrentEvasivePips: " + CurrentEvasivePips);
+                Logger.Debug("[Utilities_ColorEvasivePips] MaxPipsSustainable: " + MaxPipsSustainable);
 
                 // Note that not all of this Pips are active game objects right now
-                Logger.LogLine("[Utilities_ColorEvasivePips] PipCount: " + evasiveDisplay.PipCount);
-                Logger.LogLine("[Utilities_ColorEvasivePips] TotalPips: " + evasiveDisplay.TotalPips);
+                Logger.Debug("[Utilities_ColorEvasivePips] PipCount: " + evasiveDisplay.PipCount);
+                Logger.Debug("[Utilities_ColorEvasivePips] TotalPips: " + evasiveDisplay.TotalPips);
             }
 
             for (int i = 0; i < evasiveDisplay.TotalPips; i++)
@@ -116,8 +116,8 @@ namespace SustainableEvasion
 
             if (logInfo)
             {
-                Logger.LogLine("[Utilities_GetSustainableEvasion] actor.UnitType: " + actor.UnitType.ToString());
-                Logger.LogLine("[Utilities_GetSustainableEvasion] actor.weightClass: " + weightClass.ToString());
+                Logger.Debug("[Utilities_GetSustainableEvasion] actor.UnitType: " + actor.UnitType.ToString());
+                Logger.Debug("[Utilities_GetSustainableEvasion] actor.weightClass: " + weightClass.ToString());
             }
 
             // TEST
@@ -142,7 +142,7 @@ namespace SustainableEvasion
                         pilotHasEvasiveMovement = true;
                         if (logInfo)
                         {
-                            Logger.LogLine("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " has Evasive Movement");
+                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " has Evasive Movement");
                         }
                     }
                     if (enumerator.Current.Def.Description.Id == "AbilityDefP8")
@@ -150,7 +150,7 @@ namespace SustainableEvasion
                         pilotIsAcePilot = true;
                         if (logInfo)
                         {
-                            Logger.LogLine("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Ace Pilot");
+                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Ace Pilot");
                         }
                     }
                     if (enumerator.Current.Def.Description.Id == "AbilityDefT8A")
@@ -158,7 +158,7 @@ namespace SustainableEvasion
                         pilotIsMasterTactician = true;
                         if (logInfo)
                         {
-                            Logger.LogLine("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Master Tactician");
+                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Master Tactician");
                         }
                     }
                 }

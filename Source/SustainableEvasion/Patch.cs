@@ -22,18 +22,18 @@ namespace SustainableEvasion
                     if (p != null)
                     {
                         // Need to set all fields as one can select other actors during preview leading to wrong results
-                        Logger.LogLine("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SETTING fields at PREVIEW MOVE for pilot: " + p.Name);
+                        Logger.Debug("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SETTING fields at PREVIEW MOVE for pilot: " + p.Name);
                         Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                         Fields.WillJumpOrHasJumped = moveType == MoveType.Jumping;
                         Fields.LastActorInfo = a.LogDisplayName;
-                        Logger.LogLine("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
-                        Logger.LogLine("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
+                        Logger.Debug("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
+                        Logger.Debug("[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -49,8 +49,8 @@ namespace SustainableEvasion
                 EvasiveChangedMessage evasiveChangedMessage = message as EvasiveChangedMessage;
                 if (___displayedActor != null && evasiveChangedMessage.affectedObjectGuid == ___displayedActor.GUID && __instance.EvasiveDisplay != null)
                 {
-                    //Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] ___displayedCombatant.LogDisplayName: " + ___displayedCombatant.LogDisplayName);
-                    //Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] ___displayedActor.GetPilot().Name: " + ___displayedActor.GetPilot().Name);
+                    //Logger.Debug("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] ___displayedCombatant.LogDisplayName: " + ___displayedCombatant.LogDisplayName);
+                    //Logger.Debug("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] ___displayedActor.GetPilot().Name: " + ___displayedActor.GetPilot().Name);
 
                     AbstractActor a = ___displayedActor;
                     if (a != null)
@@ -59,12 +59,12 @@ namespace SustainableEvasion
                         Pilot p = a.GetPilot();
                         if (p != null)
                         {
-                            Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SETTING fields at EVASIVE CHANGED for pilot: " + p.Name);
+                            Logger.Debug("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SETTING fields at EVASIVE CHANGED for pilot: " + p.Name);
                             Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                             Fields.WillJumpOrHasJumped = a.JumpedLastRound;
                             Fields.LastActorInfo = a.LogDisplayName;
-                            Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
-                            Logger.LogLine("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
+                            Logger.Debug("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
+                            Logger.Debug("[CombatHUDActorInfo_OnEvasiveChanged_POSTFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
                         }
                     }
                     // This call is needed because "OnEvasiveChange" sometimes immediately is followed by a call to "RefrehAllInfo" (without triggering "ShowCurrent" inbetween)
@@ -83,7 +83,7 @@ namespace SustainableEvasion
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -96,8 +96,8 @@ namespace SustainableEvasion
             try
             {
                 // BEWARE: This sometimes thows an exception after an actor is deselected thus it's sometimes called without a "target"? Need to investigate...
-                //Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] ___displayedCombatant.LogDisplayName: " + ___displayedCombatant.LogDisplayName);
-                //Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] ___displayedActor.GetPilot().Name: " + ___displayedActor.GetPilot().Name);
+                //Logger.Debug("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] ___displayedCombatant.LogDisplayName: " + ___displayedCombatant.LogDisplayName);
+                //Logger.Debug("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] ___displayedActor.GetPilot().Name: " + ___displayedActor.GetPilot().Name);
 
                 AbstractActor a = ___displayedActor;
                 if (a != null)
@@ -106,18 +106,18 @@ namespace SustainableEvasion
                     Pilot p = a.GetPilot();
                     if (p != null)
                     {
-                        Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SETTING fields at REFRESH INFO for pilot: " + p.Name);
+                        Logger.Debug("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SETTING fields at REFRESH INFO for pilot: " + p.Name);
                         Fields.SustainablePips = Utilities.GetSustainableEvasion(a);
                         Fields.WillJumpOrHasJumped = a.JumpedLastRound;
                         Fields.LastActorInfo = a.LogDisplayName;
-                        Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
-                        Logger.LogLine("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
+                        Logger.Debug("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SET Fields.SustainablePips: " + Fields.SustainablePips);
+                        Logger.Debug("[CombatHUDActorInfo_RefreshAllInfo_PREFIX] SET Fields.WillJumpOrHasJumped: " + Fields.WillJumpOrHasJumped);
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -129,7 +129,7 @@ namespace SustainableEvasion
         {
             try
             {
-                Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] Called");
+                Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] Called");
                 // This call is to prevent wrong coloring of pips during movement preview
                 // BUT will corrupt pips of selected target in TargetingComputer (if any) DURING movement preview :-( (-> fixed, see below)
                 Utilities.ColorEvasivePips(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
@@ -140,9 +140,9 @@ namespace SustainableEvasion
                 // BEWARE: During mission load this gets called several times with "forced"/simulated visibility!
                 CombatHUD HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(__instance, null);
 
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD.Combat.IsLoadingFromSave?: " + HUD.Combat.IsLoadingFromSave.ToString());
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD != null?: " + (HUD != null).ToString());
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD.TargetingComputerShowing?: " + HUD.TargetingComputerShowing.ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD.Combat.IsLoadingFromSave?: " + HUD.Combat.IsLoadingFromSave.ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD != null?: " + (HUD != null).ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_PREFIX] HUD.TargetingComputerShowing?: " + HUD.TargetingComputerShowing.ToString());
 
                 //CombatHUDStatusPanel StatusPanel = (CombatHUDStatusPanel)AccessTools.Field(typeof(CombatHUDTargetingComputer), "StatusPanel").GetValue(HUD.TargetingComputer);
                 //CombatHUDEvasiveBarPips evasiveDisplay = (CombatHUDEvasiveBarPips)AccessTools.Field(typeof(CombatHUDStatusPanel), "evasiveDisplay").GetValue(StatusPanel);
@@ -162,21 +162,21 @@ namespace SustainableEvasion
 
 
                 /* For brain
-                Logger.LogLine("SelectedActor: " + HUD.SelectedActor.LogDisplayName);
-                Logger.LogLine("SelectedActor: " + HUD.SelectedActor.GUID);
-                Logger.LogLine("TargetingComputerShowing: " + HUD.TargetingComputerShowing.ToString());
+                Logger.Debug("SelectedActor: " + HUD.SelectedActor.LogDisplayName);
+                Logger.Debug("SelectedActor: " + HUD.SelectedActor.GUID);
+                Logger.Debug("TargetingComputerShowing: " + HUD.TargetingComputerShowing.ToString());
                 if (HUD.TargetingComputer.ActorInfo.DisplayedCombatant != null)
                 {
-                    Logger.LogLine("TargetingComputer.ActorInfo.DisplayedCombatant.LogDisplayName: " + HUD.TargetingComputer.ActorInfo.DisplayedCombatant.LogDisplayName);
+                    Logger.Debug("TargetingComputer.ActorInfo.DisplayedCombatant.LogDisplayName: " + HUD.TargetingComputer.ActorInfo.DisplayedCombatant.LogDisplayName);
                 }
                 ICombatant hoveredCombatant = (ICombatant)AccessTools.Field(typeof(CombatHUDTargetingComputer), "hoveredCombatant").GetValue(HUD.TargetingComputer);
                 if (hoveredCombatant != null)
                 {
-                    Logger.LogLine("TargetingComputer.hoveredCombatant: " + hoveredCombatant.LogDisplayName);
-                    Logger.LogLine("TargetingComputer.hoveredCombatant: " + hoveredCombatant.GUID);
+                    Logger.Debug("TargetingComputer.hoveredCombatant: " + hoveredCombatant.LogDisplayName);
+                    Logger.Debug("TargetingComputer.hoveredCombatant: " + hoveredCombatant.GUID);
                 }
-                Logger.LogLine("HUD.TargetingComputer.StatusPanel.evasiveDisplay.TotalPips: " + evasiveDisplay.TotalPips);
-                Logger.LogLine("__instance.TotalPips: " + __instance.TotalPips);
+                Logger.Debug("HUD.TargetingComputer.StatusPanel.evasiveDisplay.TotalPips: " + evasiveDisplay.TotalPips);
+                Logger.Debug("__instance.TotalPips: " + __instance.TotalPips);
                 */
 
 
@@ -189,14 +189,14 @@ namespace SustainableEvasion
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             } 
         }
         static void Postfix(CombatHUDEvasiveBarPips __instance, float current)
         {
             try
             {
-                Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] Called");
+                Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] Called");
                 // Update side panel for last touched actor
                 Utilities.UpdateSidePanel(__instance, Fields.WillJumpOrHasJumped, Fields.SustainablePips);
 
@@ -205,9 +205,9 @@ namespace SustainableEvasion
                 // Update for currently selected actor in Targeting Computer too
                 CombatHUD HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(__instance, null);
 
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD.Combat.IsLoadingFromSave?: " + HUD.Combat.IsLoadingFromSave.ToString());
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD != null?: " + (HUD != null).ToString());
-                //Logger.LogLine("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD.TargetingComputerShowing?: " + HUD.TargetingComputerShowing.ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD.Combat.IsLoadingFromSave?: " + HUD.Combat.IsLoadingFromSave.ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD != null?: " + (HUD != null).ToString());
+                //Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] HUD.TargetingComputerShowing?: " + HUD.TargetingComputerShowing.ToString());
 
                 //CombatHUDStatusPanel StatusPanel = (CombatHUDStatusPanel)AccessTools.Field(typeof(CombatHUDTargetingComputer), "StatusPanel").GetValue(HUD.TargetingComputer);
                 //CombatHUDEvasiveBarPips evasiveDisplay = (CombatHUDEvasiveBarPips)AccessTools.Field(typeof(CombatHUDStatusPanel), "evasiveDisplay").GetValue(StatusPanel);
@@ -227,7 +227,7 @@ namespace SustainableEvasion
             }
             catch(Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -286,8 +286,8 @@ namespace SustainableEvasion
                 }
 
                 // Make sustainable evasion removable if many shots are directed at target?
-                Logger.LogLine("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.allSelectedWeapons.Count: " + attackSequence.allSelectedWeapons.Count.ToString());
-                Logger.LogLine("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.attackTotalShotsFired: " + attackSequence.attackTotalShotsFired);
+                Logger.Debug("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.allSelectedWeapons.Count: " + attackSequence.allSelectedWeapons.Count.ToString());
+                Logger.Debug("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.attackTotalShotsFired: " + attackSequence.attackTotalShotsFired);
 
                 int evasivePipsCurrent = __instance.EvasivePipsCurrent;
                 //BEN: Patch
@@ -308,7 +308,7 @@ namespace SustainableEvasion
                 //:NEB
             }
             catch (Exception e) {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
