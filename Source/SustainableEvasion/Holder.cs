@@ -6,5 +6,6 @@
         public static string LastActorInfo = "Not set";
         public static int SustainablePips = 0;
         public static bool WillJumpOrHasJumped = false;
+        public static bool IsJumpPreview;
     }
 }

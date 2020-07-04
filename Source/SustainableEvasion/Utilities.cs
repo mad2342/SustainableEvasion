@@ -40,7 +40,9 @@ namespace SustainableEvasion
                         "3 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
                         "4 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
                         "5 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "6 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}"
+                        "6 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
+                        "7 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
+                        "8 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}"
                 };
                 if (CurrentEvasivePips > 0 && num < toHitMovingTargetStrings.Length)
                 {
@@ -59,14 +61,20 @@ namespace SustainableEvasion
             int CurrentEvasivePips = (int)Current;
             int MaxPipsSustainable = willJumpOrHasJumped ? 0 : Math.Min(CurrentEvasivePips, sustainablePips);
 
-            //CombatHUDPipBar combatHUDPipBar = __instance as CombatHUDPipBar;
-            //List<Graphic> Pips = (List<Graphic>)AccessTools.Property(typeof(CombatHUDPipBar), "Pips").GetValue(combatHUDPipBar, null);
-            List<Graphic> Pips = (List<Graphic>)typeof(CombatHUDPipBar).GetProperty("Pips", AccessTools.all).GetValue(evasiveDisplay, null);
-            //List<Graphic> Pips = (List<Graphic>)AccessTools.Property(typeof(CombatHUDPipBar), "Pips").GetValue(__instance, null);
+            Logger.Info($"[Utilities_ColorEvasivePips] CurrentEvasivePips: {CurrentEvasivePips}");
+            Logger.Info($"[Utilities_ColorEvasivePips] MaxPipsSustainable: {MaxPipsSustainable}");
+
+            List<Graphic> ____Pips = (List<Graphic>)typeof(CombatHUDPipBar).GetProperty("Pips", AccessTools.all).GetValue(evasiveDisplay, null);
+            Logger.Info($"[Utilities_ColorEvasivePips] ____Pips.Count: {____Pips.Count}");
+            Logger.Info($"[Utilities_ColorEvasivePips] evasiveDisplay.TotalPips: {evasiveDisplay.TotalPips}");
+
+            List<HBSDOTweenButton> ___PipButtons = (List<HBSDOTweenButton>)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "PipButtons").GetValue(evasiveDisplay, null);
+            Logger.Info($"[Utilities_ColorEvasivePips] ___PipButtons.Count: {___PipButtons.Count}");
+            bool evasiveDisplayHasTweenButtons = ___PipButtons.Count > 0;
 
             Color sustainablePipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.green;
             Color defaultPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.white;
-            Color potentialPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.whiteHalf;
+            Color potentialPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.gold;
 
             if (logInfo)
             {
@@ -83,18 +91,21 @@ namespace SustainableEvasion
 
             for (int i = 0; i < evasiveDisplay.TotalPips; i++)
             {
+                // Evasive display in CombatHUDMechTray.ActorInfo does not have the tween buttons available so it seems...
+                // Need to check for existence
+                // @ToDo: Enable this shit if actor has coil weapons or ignores evasive charges (Assassin)
+                if (____Pips[i].gameObject.GetComponent<HBSDOTweenButton>() != null) {
+                    ____Pips[i].gameObject.GetComponent<HBSDOTweenButton>().BlockDOTweenAnimations = true;
+                }
+
                 if (i < MaxPipsSustainable)
                 {
-                    UIHelpers.SetImageColor(Pips[i], sustainablePipColor);
+                    UIHelpers.SetImageColor(____Pips[i], sustainablePipColor);
                 }
                 else if (i < CurrentEvasivePips)
                 {
-                    UIHelpers.SetImageColor(Pips[i], defaultPipColor);
+                    UIHelpers.SetImageColor(____Pips[i], defaultPipColor);
                 }
-                //else
-                //{
-                //    UIHelpers.SetImageColor(Pips[i], potentialPipColor);
-                //}
             }
         }
 
