@@ -51,6 +51,8 @@
       <Link>MadLogger.cs</Link>
     </Compile>
     <Compile Include="Holder.cs" />
+    <Compile Include="Patches\GameLogic.cs" />
+    <Compile Include="Patches\UserInterface.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SustainableEvasion.cs" />
     <Compile Include="Patch.cs" />

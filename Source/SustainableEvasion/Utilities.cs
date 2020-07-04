@@ -11,23 +11,13 @@ namespace SustainableEvasion
 {
     class Utilities
     {
-        public static void UpdateSidePanel(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips, bool logInfo = true)
+        public static void UpdateSidePanel(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips)
         {
             CombatHUDSidePanelHoverElement sidePanelTip = (CombatHUDSidePanelHoverElement)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "sidePanelTip").GetValue(evasiveDisplay, null);
             CombatHUD HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(evasiveDisplay, null);
             float TargetCurrent = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "TargetCurrent").GetValue(evasiveDisplay, null);
             int CurrentEvasivePips = (int)TargetCurrent;
             int MaxPipsSustainable = willJumpOrHasJumped ? 0 : Math.Min(CurrentEvasivePips, sustainablePips);
-
-
-            if (logInfo)
-            {
-                Logger.Debug("[Utilities_UpdateSidePanel] sustainablePips: " + sustainablePips);
-                Logger.Debug("[Utilities_UpdateSidePanel] willJumpOrHasJumped: " + willJumpOrHasJumped);
-
-                Logger.Debug("[Utilities_UpdateSidePanel] CurrentEvasivePips: " + CurrentEvasivePips);
-                Logger.Debug("[Utilities_UpdateSidePanel] MaxPipsSustainable: " + MaxPipsSustainable);
-            }
 
             if (sidePanelTip != null)
             {
@@ -55,7 +45,7 @@ namespace SustainableEvasion
             }
         }
 
-        public static void ColorEvasivePips(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips, bool logInfo = false)
+        public static void ColorEvasivePips(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips)
         {
             float Current = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "Current").GetValue(evasiveDisplay, null);
             int CurrentEvasivePips = (int)Current;
@@ -75,19 +65,6 @@ namespace SustainableEvasion
             Color sustainablePipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.green;
             Color defaultPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.white;
             Color potentialPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.gold;
-
-            if (logInfo)
-            {
-                Logger.Debug("[Utilities_ColorEvasivePips] sustainablePips: " + sustainablePips);
-                Logger.Debug("[Utilities_ColorEvasivePips] willJumpOrHasJumped: " + willJumpOrHasJumped);
-
-                Logger.Debug("[Utilities_ColorEvasivePips] CurrentEvasivePips: " + CurrentEvasivePips);
-                Logger.Debug("[Utilities_ColorEvasivePips] MaxPipsSustainable: " + MaxPipsSustainable);
-
-                // Note that not all of this Pips are active game objects right now
-                Logger.Debug("[Utilities_ColorEvasivePips] PipCount: " + evasiveDisplay.PipCount);
-                Logger.Debug("[Utilities_ColorEvasivePips] TotalPips: " + evasiveDisplay.TotalPips);
-            }
 
             for (int i = 0; i < evasiveDisplay.TotalPips; i++)
             {
