@@ -1,6 +1,7 @@
 ﻿using BattleTech;
 using BattleTech.UI;
 using Harmony;
+using SustainableEvasion.Extensions;
 using System;
 
 namespace SustainableEvasion.Patches
@@ -64,7 +65,7 @@ namespace SustainableEvasion.Patches
                     }
 
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor: { ___displayedActor.DisplayName}");
-                    int sustainableEvasion = Utilities.GetSustainableEvasion(___displayedActor);
+                    int sustainableEvasion = ___displayedActor.GetSustainableEvasion();
                     bool jumpRelated = ___displayedActor.JumpedLastRound || Fields.IsJumpPreview;
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] sustainableEvasion: {sustainableEvasion}");
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] jumpRelated: {jumpRelated}");
@@ -94,7 +95,7 @@ namespace SustainableEvasion.Patches
                     }
 
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] ___displayedActor: { target.DisplayName}");
-                    int sustainableEvasion = Utilities.GetSustainableEvasion(target);
+                    int sustainableEvasion = target.GetSustainableEvasion();
                     bool jumpRelated = target.JumpedLastRound || Fields.IsJumpPreview;
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] sustainableEvasion: {sustainableEvasion}");
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] jumpRelated: {jumpRelated}");

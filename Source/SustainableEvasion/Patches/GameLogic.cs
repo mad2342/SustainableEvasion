@@ -1,5 +1,6 @@
 ﻿using BattleTech;
 using Harmony;
+using SustainableEvasion.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +21,7 @@ namespace SustainableEvasion.Patches
                     Fields.LoosePip = true;
                 }
                 // Determine capabilities of current actor
-                int sustainableEvasion = Utilities.GetSustainableEvasion(__instance);
+                int sustainableEvasion = __instance.GetSustainableEvasion();
                 if (sustainableEvasion < __instance.EvasivePipsCurrent)
                 {
                     Fields.LoosePip = true;

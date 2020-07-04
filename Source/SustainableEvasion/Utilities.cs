@@ -13,16 +13,16 @@ namespace SustainableEvasion
     {
         public static void UpdateSidePanel(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips)
         {
-            CombatHUDSidePanelHoverElement sidePanelTip = (CombatHUDSidePanelHoverElement)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "sidePanelTip").GetValue(evasiveDisplay, null);
-            CombatHUD HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(evasiveDisplay, null);
-            float TargetCurrent = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "TargetCurrent").GetValue(evasiveDisplay, null);
-            int CurrentEvasivePips = (int)TargetCurrent;
-            int MaxPipsSustainable = willJumpOrHasJumped ? 0 : Math.Min(CurrentEvasivePips, sustainablePips);
+            CombatHUDSidePanelHoverElement ___sidePanelTip = (CombatHUDSidePanelHoverElement)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "sidePanelTip").GetValue(evasiveDisplay, null);
+            CombatHUD ___HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(evasiveDisplay, null);
+            float ___TargetCurrent = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "TargetCurrent").GetValue(evasiveDisplay, null);
+            int currentEvasivePips = (int)___TargetCurrent;
+            int maxSustainablePips = willJumpOrHasJumped ? 0 : Math.Min(currentEvasivePips, sustainablePips);
 
-            if (sidePanelTip != null)
+            if (___sidePanelTip != null)
             {
-                sidePanelTip.Title = new Localize.Text("EVASIVE", new object[0]);
-                int num = (int)TargetCurrent - 1;
+                ___sidePanelTip.Title = new Localize.Text("EVASIVE", new object[0]);
+                int num = (int)___TargetCurrent - 1;
                 string[] toHitMovingTargetStrings = new string[]
                 {
                         "1 EVASIVE charge: +{0} Difficulty to hit this unit with ranged attacks. {1}",
@@ -34,59 +34,82 @@ namespace SustainableEvasion
                         "7 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
                         "8 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}"
                 };
-                if (CurrentEvasivePips > 0 && num < toHitMovingTargetStrings.Length)
+                if (currentEvasivePips > 0 && num < toHitMovingTargetStrings.Length)
                 {
-                    sidePanelTip.Description = new Localize.Text(toHitMovingTargetStrings[num], new object[]
+                    ___sidePanelTip.Description = new Localize.Text(toHitMovingTargetStrings[num], new object[]
                     {
-                            HUD.Combat.ToHit.GetEvasivePipsModifier((int)TargetCurrent, null),
-                            MaxPipsSustainable > 0 ? "\n<color=#CADFACFF>" + MaxPipsSustainable.ToString() + " SUSTAINABLE Evasion: These can only be removed by melee or sensor lock.</color>" : ""
+                            ___HUD.Combat.ToHit.GetEvasivePipsModifier((int)___TargetCurrent, null),
+                            maxSustainablePips > 0 ? "\n<color=#CADFACFF>" + maxSustainablePips.ToString() + " SUSTAINABLE Evasion: These can only be removed by melee or sensor lock.</color>" : ""
                     });
                 }
             }
         }
 
+
+
         public static void ColorEvasivePips(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips)
         {
-            float Current = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "Current").GetValue(evasiveDisplay, null);
-            int CurrentEvasivePips = (int)Current;
-            int MaxPipsSustainable = willJumpOrHasJumped ? 0 : Math.Min(CurrentEvasivePips, sustainablePips);
-
-            Logger.Info($"[Utilities_ColorEvasivePips] CurrentEvasivePips: {CurrentEvasivePips}");
-            Logger.Info($"[Utilities_ColorEvasivePips] MaxPipsSustainable: {MaxPipsSustainable}");
-
             List<Graphic> ____Pips = (List<Graphic>)typeof(CombatHUDPipBar).GetProperty("Pips", AccessTools.all).GetValue(evasiveDisplay, null);
+            float ___Current = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "Current").GetValue(evasiveDisplay, null);
+            int currentEvasivePips = (int)___Current;
+            int maxPipsSustainable = willJumpOrHasJumped ? 0 : Math.Min(currentEvasivePips, sustainablePips);
+
             Logger.Info($"[Utilities_ColorEvasivePips] ____Pips.Count: {____Pips.Count}");
             Logger.Info($"[Utilities_ColorEvasivePips] evasiveDisplay.TotalPips: {evasiveDisplay.TotalPips}");
+            Logger.Info($"[Utilities_ColorEvasivePips] currentEvasivePips: {currentEvasivePips}");
+            Logger.Info($"[Utilities_ColorEvasivePips] maxPipsSustainable: {maxPipsSustainable}");
 
-            List<HBSDOTweenButton> ___PipButtons = (List<HBSDOTweenButton>)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "PipButtons").GetValue(evasiveDisplay, null);
-            Logger.Info($"[Utilities_ColorEvasivePips] ___PipButtons.Count: {___PipButtons.Count}");
-            bool evasiveDisplayHasTweenButtons = ___PipButtons.Count > 0;
 
+
+            bool ___ActorHasCOIL = Traverse.Create(evasiveDisplay).Field("ActorHasCOIL").GetValue<bool>();
+            bool ___ShouldShowCOILPips = Traverse.Create(evasiveDisplay).Field("ShouldShowCOILPips").GetValue<bool>();
+            int ___AssassinPipIgnoreCount = Traverse.Create(evasiveDisplay).Field("AssassinPipIgnoreCount").GetValue<int>();
+            Logger.Info($"[Utilities_ColorEvasivePips] ___ActorHasCOIL: {___ActorHasCOIL}");
+            Logger.Info($"[Utilities_ColorEvasivePips] ___ShouldShowCOILPips: {___ShouldShowCOILPips}");
+            Logger.Info($"[Utilities_ColorEvasivePips] ___AssassinPipIgnoreCount: {___AssassinPipIgnoreCount}");
+
+
+
+            //List<HBSDOTweenButton> ___PipButtons = (List<HBSDOTweenButton>)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "PipButtons").GetValue(evasiveDisplay, null);
+            //Logger.Info($"[Utilities_ColorEvasivePips] ___PipButtons.Count: {___PipButtons.Count}");
+
+            Color coilPipColor = LazySingletonBehavior<UIManager>.Instance.UILookAndColorConstants.EvasivePipsSuperCharged.color;
+            Color ignoreColor = LazySingletonBehavior<UIManager>.Instance.UILookAndColorConstants.EvasivePipsIgnored.color;
             Color sustainablePipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.green;
             Color defaultPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.white;
-            Color potentialPipColor = LazySingletonBehavior<UIManager>.Instance.UIColorRefs.gold;
 
             for (int i = 0; i < evasiveDisplay.TotalPips; i++)
             {
                 // Evasive display in CombatHUDMechTray.ActorInfo does not have the tween buttons available so it seems...
                 // Need to check for existence
-                // @ToDo: Enable this shit if actor has coil weapons or ignores evasive charges (Assassin)
+                // @ToDo: Enable this shit if actor has coil weapons or ignores evasive charges (Assassin)?
                 if (____Pips[i].gameObject.GetComponent<HBSDOTweenButton>() != null) {
                     ____Pips[i].gameObject.GetComponent<HBSDOTweenButton>().BlockDOTweenAnimations = true;
                 }
 
-                if (i < MaxPipsSustainable)
+                if (___ActorHasCOIL && ___ShouldShowCOILPips)
+                {
+                    UIHelpers.SetImageColor(____Pips[i], coilPipColor);
+                }
+                else if (i < ___AssassinPipIgnoreCount)
+                {
+                    UIHelpers.SetImageColor(____Pips[i], ignoreColor);
+                }
+                else if (i < maxPipsSustainable)
                 {
                     UIHelpers.SetImageColor(____Pips[i], sustainablePipColor);
                 }
-                else if (i < CurrentEvasivePips)
+                else if (i < currentEvasivePips)
                 {
                     UIHelpers.SetImageColor(____Pips[i], defaultPipColor);
                 }
             }
         }
 
-        public static int GetSustainableEvasion(AbstractActor actor, bool logInfo = true)
+
+
+        // Legacy
+        public static int GetSustainableEvasion(AbstractActor actor)
         {
             WeightClass weightClass = new WeightClass();
             if (actor.UnitType == UnitType.Mech)
@@ -100,12 +123,6 @@ namespace SustainableEvasion
             else
             {
                 return 0;
-            }
-
-            if (logInfo)
-            {
-                Logger.Debug("[Utilities_GetSustainableEvasion] actor.UnitType: " + actor.UnitType.ToString());
-                Logger.Debug("[Utilities_GetSustainableEvasion] actor.weightClass: " + weightClass.ToString());
             }
 
             // TEST
@@ -128,29 +145,21 @@ namespace SustainableEvasion
                     if (enumerator.Current.Def.Description.Id == "AbilityDefP5")
                     {
                         pilotHasEvasiveMovement = true;
-                        if (logInfo)
-                        {
-                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " has Evasive Movement");
-                        }
+                        Logger.Info("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " has Evasive Movement");
                     }
                     if (enumerator.Current.Def.Description.Id == "AbilityDefP8")
                     {
                         pilotIsAcePilot = true;
-                        if (logInfo)
-                        {
-                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Ace Pilot");
-                        }
+                        Logger.Info("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Ace Pilot");
                     }
                     if (enumerator.Current.Def.Description.Id == "AbilityDefT8A")
                     {
                         pilotIsMasterTactician = true;
-                        if (logInfo)
-                        {
-                            Logger.Debug("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Master Tactician");
-                        }
+                        Logger.Info("[Utilities_GetSustainableEvasion] Pilot " + p.Name + " is Master Tactician");
                     }
                 }
             }
+
             // Adding up
             if (pilotHasEvasiveMovement)
             {
@@ -172,11 +181,7 @@ namespace SustainableEvasion
                     sustainableEvasion = SustainableEvasion.Settings.SustainableEvasionAssault;
                 }
 
-                // Check boni
-                if (pilotIsAcePilot)
-                {
-                    sustainableEvasion += SustainableEvasion.Settings.AcePilotSustainableBonus;
-                }
+                // Check bonus
                 else if (pilotIsMasterTactician)
                 {
                     sustainableEvasion += SustainableEvasion.Settings.MasterTacticianSustainableBonus;

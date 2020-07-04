@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="0Harmony" />
     <Reference Include="Assembly-CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,12 +44,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine" />
     <Reference Include="UnityEngine.CoreModule" />
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="UnityEngine.UI" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Link\MadLogger.cs">
       <Link>MadLogger.cs</Link>
     </Compile>
+    <Compile Include="Extensions\AbstractActorExtensions.cs" />
     <Compile Include="Holder.cs" />
     <Compile Include="Patches\GameLogic.cs" />
     <Compile Include="Patches\UserInterface.cs" />
@@ -63,7 +64,6 @@
     <None Include="mod.json" />
     <None Include="README.md" />
     <None Include="StreamingAssets\data\abilities\AbilityDefP5.json" />
-    <None Include="StreamingAssets\data\abilities\AbilityDefP8.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -73,7 +73,6 @@ xcopy $(ProjectDir)mod.json $(SolutionDir)..\Release\$(TargetName)\ /Y
 xcopy $(ProjectDir)README.md $(SolutionDir)..\Release\$(TargetName)\ /Y
 xcopy $(ProjectDir)README.md $(SolutionDir)..\ /Y
 xcopy $(ProjectDir)StreamingAssets\data\abilities\AbilityDefP5.json $(SolutionDir)..\Release\$(TargetName)\StreamingAssets\data\abilities\ /Y
-xcopy $(ProjectDir)StreamingAssets\data\abilities\AbilityDefP8.json $(SolutionDir)..\Release\$(TargetName)\StreamingAssets\data\abilities\ /Y
 	</PostBuildEvent>
   </PropertyGroup>
 </Project>
