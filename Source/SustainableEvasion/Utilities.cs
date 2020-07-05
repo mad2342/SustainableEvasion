@@ -11,44 +11,6 @@ namespace SustainableEvasion
 {
     class Utilities
     {
-        /*
-        public static void UpdateSidePanel(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips)
-        {
-            CombatHUDSidePanelHoverElement ___sidePanelTip = (CombatHUDSidePanelHoverElement)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "sidePanelTip").GetValue(evasiveDisplay, null);
-            CombatHUD ___HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(evasiveDisplay, null);
-            float ___TargetCurrent = (float)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "TargetCurrent").GetValue(evasiveDisplay, null);
-            int currentEvasivePips = (int)___TargetCurrent;
-            int currentSustainablePips = willJumpOrHasJumped ? 0 : Math.Min(currentEvasivePips, sustainablePips);
-
-            if (___sidePanelTip != null)
-            {
-                ___sidePanelTip.Title = new Localize.Text("EVASIVE", new object[0]);
-                int num = (int)___TargetCurrent - 1;
-                string[] toHitMovingTargetStrings = new string[]
-                {
-                        "1 EVASIVE charge: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "2 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "3 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "4 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "5 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "6 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "7 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}",
-                        "8 EVASIVE charges: +{0} Difficulty to hit this unit with ranged attacks. {1}"
-                };
-                if (currentEvasivePips > 0 && num < toHitMovingTargetStrings.Length)
-                {
-                    ___sidePanelTip.Description = new Localize.Text(toHitMovingTargetStrings[num], new object[]
-                    {
-                            ___HUD.Combat.ToHit.GetEvasivePipsModifier((int)___TargetCurrent, null),
-                            currentSustainablePips > 0 ? "\n<color=#CADFACFF>" + currentSustainablePips.ToString() + " SUSTAINABLE Evasion: These can only be removed by melee or sensor lock.</color>" : ""
-                    });
-                }
-            }
-        }
-        */
-
-
-
         public static void ColorEvasivePips(CombatHUDEvasiveBarPips evasiveDisplay, bool willJumpOrHasJumped, int sustainablePips, bool suppressCoilPips = false)
         {
             List<Graphic> ____Pips = (List<Graphic>)typeof(CombatHUDPipBar).GetProperty("Pips", AccessTools.all).GetValue(evasiveDisplay, null);

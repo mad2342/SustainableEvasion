@@ -6,7 +6,7 @@
 * Pilots with evasive movement can now uphold some evasive charges
   * Only moving and sprinting allows to sustain evasion
   * Amount of sustainable evasion depends on the base initiative of the piloted unit
-  * Master Tacticians gain a bonus pip too as they rise the base initiative (Scouts)
+  * Master Tacticians gain a bonus pip too as they raise the base initiative (Scouts)
   * Melee attacks and sensor lock can still strip this kind of evasive charges
 * Sustainable evasion is highlighted in the UI
   * Sustainable pips are colored green
