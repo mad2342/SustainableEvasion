@@ -7,64 +7,88 @@ namespace SustainableEvasion.Extensions
     {
         public static int GetSustainableEvasion(this AbstractActor actor)
         {
-            Pilot pilot = actor.GetPilot();
-            bool pilotHasEvasiveMovement = false;
+            if (actor.UnitType == UnitType.Turret)
+            {
+                return 0;
+            }
+
+            WeightClass weightClass = actor.GetWeightClass();
+            Pilot p = actor.GetPilot();
+
             int sustainableEvasion = 0;
+            bool pilotHasEvasiveMovement = false;
+            bool pilotIsMasterTactician = false;
 
-            Logger.Info("[Utilities_GetSustainableEvasion] actor.Initiative: " + actor.InitiativeAsString);
-
-            using (List<Ability>.Enumerator enumerator = pilot.Abilities.GetEnumerator())
+            using (List<Ability>.Enumerator enumerator = p.Abilities.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     if (enumerator.Current.Def.Description.Id == "AbilityDefP5")
                     {
                         pilotHasEvasiveMovement = true;
-                        Logger.Info($"[Utilities_GetSustainableEvasion] {pilot.Name} has evasive movement.");
-
-                        break;
+                        //Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} has Evasive Movement");
+                    }
+                    if (enumerator.Current.Def.Description.Id == "AbilityDefT8A")
+                    {
+                        pilotIsMasterTactician = true;
+                        //Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} is Master Tactician");
                     }
                 }
             }
 
-
-
             if (pilotHasEvasiveMovement)
             {
-                // Using the CURRENT initiative here. Interesting effect as actors who defer their phase are getting less and less sustainable evasion...
-                /*
-                if (Int32.TryParse(actor.InitiativeAsString, out int initiative))
+                if (weightClass == WeightClass.LIGHT)
                 {
-                    sustainableEvasion = initiative;
+                    sustainableEvasion = SustainableEvasion.Settings.SustainableEvasionLight;
                 }
-                */
-
-                // Using BASE initiative
-                int baseInitiative = actor.BaseInitiative; // Includes phase modifiers from master tactician or battle computer
-                switch (baseInitiative)
+                else if (weightClass == WeightClass.MEDIUM)
                 {
-                    case 1:
-                        sustainableEvasion = 5;
-                        break;
-                    case 2:
-                        sustainableEvasion = 4;
-                        break;
-                    case 3:
-                        sustainableEvasion = 3;
-                        break;
-                    case 4:
-                        sustainableEvasion = 2;
-                        break;
-                    case 5:
-                        sustainableEvasion = 1;
-                        break;
-                    default:
-                        break;
+                    sustainableEvasion = SustainableEvasion.Settings.SustainableEvasionMedium;
+                }
+                else if (weightClass == WeightClass.HEAVY)
+                {
+                    sustainableEvasion = SustainableEvasion.Settings.SustainableEvasionHeavy;
+                }
+                else if (weightClass == WeightClass.ASSAULT)
+                {
+                    sustainableEvasion = SustainableEvasion.Settings.SustainableEvasionAssault;
+                }
+
+                // Bonus for Scouts
+                if (pilotIsMasterTactician)
+                {
+                    sustainableEvasion += SustainableEvasion.Settings.MasterTacticianSustainableBonus;
                 }
             }
-            Logger.Info($"[Utilities_GetSustainableEvasion] {pilot.Name} can sustain {sustainableEvasion} evasion.");
-
             return sustainableEvasion;
+        }
+
+
+
+        public static WeightClass GetWeightClass(this AbstractActor actor)
+        {
+            WeightClass weightClass = WeightClass.LIGHT;
+
+            if (actor.UnitType == UnitType.Turret)
+            {
+                weightClass = (actor as Turret).TurretDef.Chassis.weightClass;
+            }
+            else if (actor.UnitType == UnitType.Vehicle)
+            {
+                weightClass = (actor as Vehicle).VehicleDef.Chassis.weightClass;
+            }
+            else if (actor.UnitType == UnitType.Mech)
+            {
+                weightClass = (actor as Mech).MechDef.Chassis.weightClass;
+            }
+            else
+            {
+                // Throw error
+                Logger.Debug($"[AbstractActorExtensions_GetWeightClass] ({actor.DisplayName}) is an unknown specialization of AbstractActor");
+            }
+
+            return weightClass;
         }
     }
 }

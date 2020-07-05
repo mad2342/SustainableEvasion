@@ -55,7 +55,7 @@ namespace SustainableEvasion.Patches
         [HarmonyPatch(typeof(CombatHUDActorInfo), "RefreshEvasiveDisplay")]
         public static class CombatHUDActorInfo_RefreshEvasiveDisplay_Patch
         {
-            static void Postfix(CombatHUDActorInfo __instance, ICombatant ___displayedCombatant, AbstractActor ___displayedActor, Mech ___displayedMech)
+            static void Postfix(CombatHUDActorInfo __instance, bool? isSelected, ICombatant ___displayedCombatant, AbstractActor ___displayedActor, Mech ___displayedMech)
             {
                 try
                 {
@@ -64,16 +64,25 @@ namespace SustainableEvasion.Patches
                         return;
                     }
 
+                    Logger.Debug($"---");
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor: { ___displayedActor.DisplayName}");
+                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.JumpedLastRound: {___displayedActor.JumpedLastRound}");
+                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.HasMovedThisRound: {___displayedActor.HasMovedThisRound}");
+
                     int sustainableEvasion = ___displayedActor.GetSustainableEvasion();
-                    bool jumpRelated = ___displayedActor.JumpedLastRound || Fields.IsJumpPreview;
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] sustainableEvasion: {sustainableEvasion}");
-                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] jumpRelated: {jumpRelated}");
 
-                    Utilities.ColorEvasivePips(__instance.EvasiveDisplay, jumpRelated, sustainableEvasion);
+                    bool willJumpOrHasJumped = ___displayedActor.JumpedLastRound;
+                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] willJumpOrHasJumped: {willJumpOrHasJumped}");
 
-                    // Update SidePanel too
-                    Utilities.UpdateSidePanel(__instance.EvasiveDisplay, jumpRelated, sustainableEvasion);
+                    bool isCurrentlySelected = (isSelected == null) ? (__instance.HUD.SelectedActor == ___displayedActor) : isSelected.Value;
+                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] isCurrentlySelected: {isCurrentlySelected}");
+
+                    bool suppressCoilPips = isCurrentlySelected && !___displayedActor.HasMovedThisRound;
+                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] suppressCoilPips: {suppressCoilPips}");
+
+                    Utilities.ColorEvasivePips(__instance.EvasiveDisplay, willJumpOrHasJumped, sustainableEvasion, suppressCoilPips);
+                    //Utilities.UpdateSidePanel(__instance.EvasiveDisplay, willJumpOrHasJumped, sustainableEvasion);
                 }
                 catch (Exception e)
                 {
@@ -81,6 +90,8 @@ namespace SustainableEvasion.Patches
                 }
             }
         }
+
+
 
         [HarmonyPatch(typeof(CombatHUDStatusPanel), "ShowMoveIndicators", new Type[] { typeof(AbstractActor), typeof(float) })]
         public static class CombatHUDStatusPanel_ShowMoveIndicators_Patch
@@ -94,11 +105,64 @@ namespace SustainableEvasion.Patches
                         return;
                     }
 
-                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] ___displayedActor: { target.DisplayName}");
+                    Logger.Debug($"---");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target: {target.DisplayName}");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasJumpedThisRound: {target.HasJumpedThisRound}");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.JumpedLastRound: {target.JumpedLastRound}");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasMovedThisRound: {target.HasMovedThisRound}");
+
+                    bool isMoveStatusPreview = __instance.GetComponentInParent(typeof(MoveStatusPreview)) != null;
+                    bool isCombatHUDMechTray = __instance.GetComponentInParent(typeof(CombatHUDMechTray)) != null;
+                    bool isCombatHUDTargetingComputer = __instance.GetComponentInParent(typeof(CombatHUDTargetingComputer)) != null;
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] isMoveStatusPreview: {isMoveStatusPreview}");
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] isCombatHUDMechTray: {isCombatHUDMechTray}");
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] isCombatHUDTargetingComputer: {isCombatHUDTargetingComputer}");
+
+                    //CombatHUD ___HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDStatusPanel), "HUD").GetValue(__instance, null);
+                    //bool isJumpPreview = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.Jump;
+                    //Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] isJumpPreview: {isJumpPreview}");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] Fields.IsJumpPreview: {Fields.IsJumpPreview}");
+
                     int sustainableEvasion = target.GetSustainableEvasion();
-                    bool jumpRelated = target.JumpedLastRound || Fields.IsJumpPreview;
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] sustainableEvasion: {sustainableEvasion}");
-                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] jumpRelated: {jumpRelated}");
+
+                    bool willJumpOrHasJumped = isMoveStatusPreview ? Fields.IsJumpPreview : (target.HasJumpedThisRound || target.JumpedLastRound);
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] willJumpOrHasJumped: {willJumpOrHasJumped}");
+
+                    bool suppressCoilPips = isCombatHUDTargetingComputer && !target.HasMovedThisRound;
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] suppressCoilPips: {suppressCoilPips}");
+
+                    Utilities.ColorEvasivePips(__instance.evasiveDisplay, willJumpOrHasJumped, sustainableEvasion, suppressCoilPips);
+                    //Utilities.UpdateSidePanel(__instance.evasiveDisplay, willJumpOrHasJumped, sustainableEvasion);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
+            }
+        }
+
+
+        
+        // Overrides the former for previews
+        /*
+        [HarmonyPatch(typeof(CombatHUDStatusPanel), "ShowPreviewMoveIndicators", new Type[] { typeof(AbstractActor), typeof(MoveType) })]
+        public static class CombatHUDStatusPanel_ShowPreviewMoveIndicators_Patch
+        {
+            static void Postfix(CombatHUDStatusPanel __instance, AbstractActor actor, MoveType moveType)
+            {
+                try
+                {
+                    if (actor == null)
+                    {
+                        return;
+                    }
+
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] ___displayedActor: { actor.DisplayName}");
+                    int sustainableEvasion = actor.GetSustainableEvasion();
+                    bool jumpRelated = moveType == MoveType.Jumping;
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] sustainableEvasion: {sustainableEvasion}");
+                    Logger.Debug($"[CombatHUDStatusPanel_ShowPreviewMoveIndicators_POSTFIX] jumpRelated: {jumpRelated}");
 
                     Utilities.ColorEvasivePips(__instance.evasiveDisplay, jumpRelated, sustainableEvasion);
 
@@ -112,5 +176,41 @@ namespace SustainableEvasion.Patches
                 }
             }
         }
+        */
+
+
+        /*
+        [HarmonyPatch(typeof(CombatHUDEvasiveBarPips), "UpdateEvasive")]
+        public static class CombatHUDEvasiveBarPips_UpdateEvasive_Patch
+        {
+            static void Postfix(CombatHUDEvasiveBarPips __instance, float current)
+            {
+                try
+                {
+                    Logger.Debug("[CombatHUDEvasiveBarPips_UpdateEvasive_POSTFIX] Called");
+
+
+                    // ToDo: Still confuses coil stuff
+                    CombatHUD ___HUD = (CombatHUD)AccessTools.Property(typeof(CombatHUDEvasiveBarPips), "HUD").GetValue(__instance, null);
+                    if (___HUD.TargetingComputer != null && ___HUD.TargetingComputer.ActorInfo != null)
+                    {
+                        if (___HUD.TargetingComputer.ActorInfo.DisplayedCombatant is AbstractActor displayedActor)
+                        {
+                            int sustainableEvasion = displayedActor.GetSustainableEvasion();
+                            Utilities.ColorEvasivePips(___HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
+
+                            // Update SidePanel too
+                            Utilities.UpdateSidePanel(___HUD.TargetingComputer.ActorInfo.EvasiveDisplay, displayedActor.JumpedLastRound, sustainableEvasion);
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
+            }
+        }
+        */
     }
 }
