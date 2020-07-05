@@ -26,12 +26,12 @@ namespace SustainableEvasion.Extensions
                     if (enumerator.Current.Def.Description.Id == "AbilityDefP5")
                     {
                         pilotHasEvasiveMovement = true;
-                        //Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} has Evasive Movement");
+                        Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} has Evasive Movement");
                     }
                     if (enumerator.Current.Def.Description.Id == "AbilityDefT8A")
                     {
                         pilotIsMasterTactician = true;
-                        //Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} is Master Tactician");
+                        Logger.Info($"[Utilities_GetSustainableEvasion] Pilot {p.Name} is Master Tactician");
                     }
                 }
             }

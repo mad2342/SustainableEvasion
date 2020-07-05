@@ -1,8 +1,8 @@
 {
     "Name": "SustainableEvasion",
-    "Enabled": false,
+    "Enabled": true,
 
-    "Version": "1.9.1-001R",
+    "Version": "1.9.1-002R",
     "Description": "Skilled pilots can sustain some of their evasion while being fired at.",
     "Author": "Mad",
 	

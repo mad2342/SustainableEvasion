@@ -66,8 +66,8 @@ namespace SustainableEvasion.Patches
 
                     Logger.Debug($"---");
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor: { ___displayedActor.DisplayName}");
-                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.JumpedLastRound: {___displayedActor.JumpedLastRound}");
-                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.HasMovedThisRound: {___displayedActor.HasMovedThisRound}");
+                    Logger.Info($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.JumpedLastRound: {___displayedActor.JumpedLastRound}");
+                    Logger.Info($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] ___displayedActor.HasMovedThisRound: {___displayedActor.HasMovedThisRound}");
 
                     int sustainableEvasion = ___displayedActor.GetSustainableEvasion();
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] sustainableEvasion: {sustainableEvasion}");
@@ -76,13 +76,14 @@ namespace SustainableEvasion.Patches
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] willJumpOrHasJumped: {willJumpOrHasJumped}");
 
                     bool isCurrentlySelected = (isSelected == null) ? (__instance.HUD.SelectedActor == ___displayedActor) : isSelected.Value;
-                    Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] isCurrentlySelected: {isCurrentlySelected}");
+                    Logger.Info($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] isCurrentlySelected: {isCurrentlySelected}");
 
                     bool suppressCoilPips = isCurrentlySelected && !___displayedActor.HasMovedThisRound;
                     Logger.Debug($"[CombatHUDActorInfo_RefreshEvasiveDisplay_POSTFIX] suppressCoilPips: {suppressCoilPips}");
 
+
+
                     Utilities.ColorEvasivePips(__instance.EvasiveDisplay, willJumpOrHasJumped, sustainableEvasion, suppressCoilPips);
-                    //Utilities.UpdateSidePanel(__instance.EvasiveDisplay, willJumpOrHasJumped, sustainableEvasion);
                 }
                 catch (Exception e)
                 {
@@ -107,9 +108,9 @@ namespace SustainableEvasion.Patches
 
                     Logger.Debug($"---");
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target: {target.DisplayName}");
-                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasJumpedThisRound: {target.HasJumpedThisRound}");
-                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.JumpedLastRound: {target.JumpedLastRound}");
-                    Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasMovedThisRound: {target.HasMovedThisRound}");
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasJumpedThisRound: {target.HasJumpedThisRound}");
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.JumpedLastRound: {target.JumpedLastRound}");
+                    Logger.Info($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] target.HasMovedThisRound: {target.HasMovedThisRound}");
 
                     bool isMoveStatusPreview = __instance.GetComponentInParent(typeof(MoveStatusPreview)) != null;
                     bool isCombatHUDMechTray = __instance.GetComponentInParent(typeof(CombatHUDMechTray)) != null;
@@ -132,8 +133,9 @@ namespace SustainableEvasion.Patches
                     bool suppressCoilPips = isCombatHUDTargetingComputer && !target.HasMovedThisRound;
                     Logger.Debug($"[CombatHUDStatusPanel_ShowMoveIndicators_POSTFIX] suppressCoilPips: {suppressCoilPips}");
 
+
+
                     Utilities.ColorEvasivePips(__instance.evasiveDisplay, willJumpOrHasJumped, sustainableEvasion, suppressCoilPips);
-                    //Utilities.UpdateSidePanel(__instance.evasiveDisplay, willJumpOrHasJumped, sustainableEvasion);
                 }
                 catch (Exception e)
                 {
