@@ -56,9 +56,10 @@ namespace SustainableEvasion.Patches
                         }
                     }
 
-                    // Make sustainable evasion removable if many shots are directed at target?
+                    // Make sustainable evasion removable if many shots are directed at target? Or if any location was destroyed?
                     Logger.Info("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.allSelectedWeapons.Count: " + attackSequence.allSelectedWeapons.Count.ToString());
                     Logger.Info("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.attackTotalShotsFired: " + attackSequence.attackTotalShotsFired);
+                    //Logger.Info("[AbstractActor_ResolveAttackSequence_POSTFIX] attackSequence.GetAttackDestroyedAnyLocation: " + attackSequence.GetAttackDestroyedAnyLocation(__instance.GUID));
 
                     int evasivePipsCurrent = __instance.EvasivePipsCurrent;
                     //BEN: Patch
